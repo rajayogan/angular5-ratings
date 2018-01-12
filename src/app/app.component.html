@@ -22,14 +22,18 @@
 </mat-radio-group>
 <button mat-raised-button color="primary" (click)="saveEntry()">Save Entry</button>
 
-<ngx-charts-pie-chart *ngIf = "chartdata"
+    <ngx-charts-bar-horizontal
       [view]="view"
       [scheme]="colorScheme"
-      [results]="countryData"
-      [legend]="showLegend"
-      [explodeSlices]="explodeSlices"
-      [labels]="showLabels"
-      [doughnut]="doughnut"
+      [results]="ratingData"
+      [xAxis]="true"
+      [yAxis]="true"
+      [legend]="false"
+      [showXAxisLabel]="true"
+      [showYAxisLabel]="true"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
       (select)="onSelect($event)">
-    </ngx-charts-pie-chart>
+    </ngx-charts-bar-horizontal>
 
+    <h3> Rating - {{actualRating}} </h3>

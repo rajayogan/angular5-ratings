@@ -17,19 +17,22 @@ export class AppComponent implements OnInit {
 
   chartdata: boolean = false;
 
-  countryCount = [];
-  countryData = [];
+  ratingsCount = [];
+  ratingData = [];
+  totalCount = 0;
+  actualRating;
+
+  xAxisLabel = "Number of entries";
+  yAxisLabel = "Rating"
 
   //Chart
-  view: any[] = [700, 400];
-  showLegend = true;
+  view: any[] = [500, 300];
 
   colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#8A2BE2', '#4169E1']
   };
   showLabels = true;
-  explodeSlices = true;
-  doughnut = false;
+  
 
   constructor(private vote: VoteService) {}
 
@@ -49,21 +52,44 @@ export class AppComponent implements OnInit {
   }
 
   processData(entries) {
-    this.countryCount = [];
-    this.countryData = [];
+
+    this.ratingData = [];
+    this.ratingsCount = [];
+    this.totalCount = 0;
+
     entries.forEach(element => {
-      if (this.countryCount[element.country])
-        this.countryCount[element.country] += 1;
+      if (this.ratingsCount[element.rating])
+        this.ratingsCount[element.rating] += 1;
       else
-        this.countryCount[element.country] = 1;
+        this.ratingsCount[element.rating] = 1;
     });
-    for (var key in this.countryCount) {
+    for (var key in this.ratingsCount) {
       let singleentry = {
-        name: key,
-        value: this.countryCount[key]
+        name: key + ' star',
+        value: this.ratingsCount[key]
       }
-      this.countryData.push(singleentry);
+      this.ratingData.push(singleentry);
     }
+
+    for (var key in this.ratingsCount) {
+      if (key == '5') {
+        this.totalCount += this.ratingsCount[key] * 5;
+      }
+      else if (key == '4') {
+        this.totalCount += this.ratingsCount[key] * 4;
+      }
+      else if (key == '3') {
+        this.totalCount += this.ratingsCount[key] * 3;
+      }
+      else if (key == '2') {
+        this.totalCount += this.ratingsCount[key] * 2;
+      }
+      else 
+        this.totalCount += this.ratingsCount[key];
+      
+    }
+
+    this.actualRating = (this.totalCount / entries.length).toFixed(2);
 
   }
 
